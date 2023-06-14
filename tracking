@@ -1,0 +1,21 @@
+// Add this code to your theme's functions.php file or a custom plugin
+
+// Function to increment post views
+function increment_post_views() {
+    if (is_single()) {
+        $postID = get_the_ID();
+        $countKey = 'post_views_count';
+        $count = get_post_meta($postID, $countKey, true);
+        if ($count == '') {
+            $count = 0;
+            delete_post_meta($postID, $countKey);
+            add_post_meta($postID, $countKey, '0');
+        } else {
+            $count++;
+            update_post_meta($postID, $countKey, $count);
+        }
+    }
+}
+
+// Hook the function to the appropriate action
+add_action('wp_head', 'increment_post_views');
